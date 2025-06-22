@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Monster Galerie</title>
   <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f9f9f9;
+    }
     .gallery {
       display: flex;
       flex-wrap: wrap;
@@ -11,22 +16,28 @@
     }
     .item {
       width: 200px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
     .item img {
       width: 100%;
-      border-radius: 8px;
+      height: auto;
+      border-radius: 6px;
     }
   </style>
 </head>
 <body>
+
   <h1>Monster Galerie</h1>
   <div class="gallery" id="gallery"></div>
 
   <script>
     const galleryContainer = document.getElementById("gallery");
-
-    const dataUrl = "https://script.google.com/macros/s/AKfycbxS3g73uh6kzzjPa3GfSfiJaR24NrSdv8tn5k6Hu17eFxf37yHlSy8YIYGauUPvF9ZN/exec"; // DEINE WebApp-URL hier einsetzen
+    const dataUrl = "https://script.google.com/macros/s/AKfyc.../exec"; // Deine WebApp-URL
 
     fetch(dataUrl)
       .then(res => res.json())
@@ -36,9 +47,16 @@
           item.className = "item";
 
           const img = document.createElement("img");
-          img.src = const match = entry.image.match(/\/d\/([a-zA-Z0-9_-]+)\//);
-                    const fileId = match ? match[1] : null;
-                    img.src = `https://drive.google.com/uc?export=view&id=${fileId}`;; // oder entry.url, je nachdem wie dein JSON heißt
+
+          // Extrahiere die Drive-Datei-ID aus dem image-Feld
+          const match = entry.image.match(/\/d\/([a-zA-Z0-9_-]+)\//);
+          if (match && match[1]) {
+            const fileId = match[1];
+            img.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
+          } else {
+            img.alt = "Bild konnte nicht geladen werden";
+          }
+
           img.alt = entry.name;
 
           const caption = document.createElement("p");
@@ -53,5 +71,6 @@
         console.error("Fehler beim Laden der Daten:", err);
       });
   </script>
+
 </body>
 </html>
