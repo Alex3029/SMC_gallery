@@ -2,13 +2,27 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>#SaturdayMonsterChallenge Gallery</title>
+  <title>Monster Gallery</title>
+  <style>
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .item {
+      width: 200px;
+      text-align: center;
+    }
+    .item img {
+      width: 100%;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 <body>
-  <h1>#SaturdayMonsterChallenge</h1>
-  <p>Welcome to the weekly SMC Monster gallery!</p>
-  <ul>
-    <li><a href="test.html">Topic: Comeback Monster</a></li>
-  </ul>
+  <h1>Monster Gallery</h1>
+  <div class="gallery" id="gallery"></div>
+
+  <script src="gallery.js"></script>
 </body>
 </html>
