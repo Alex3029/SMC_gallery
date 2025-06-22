@@ -2,6 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Monster Galerie</title>
   <style>
     body {
@@ -9,11 +10,17 @@
       padding: 20px;
       background: #f9f9f9;
     }
+
+    h1 {
+      font-size: 2em;
+    }
+
     .gallery {
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
     }
+
     .item {
       width: 200px;
       background: white;
@@ -23,6 +30,7 @@
       box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
+
     .item img {
       width: 100%;
       height: auto;
@@ -37,24 +45,30 @@
 
   <script>
     const galleryContainer = document.getElementById("gallery");
-    const dataUrl = "https://script.google.com/macros/s/AKfycbxS3g73uh6kzzjPa3GfSfiJaR24NrSdv8tn5k6Hu17eFxf37yHlSy8YIYGauUPvF9ZN/exec"; // Deine WebApp-URL
+
+    const dataUrl = "https://script.google.com/macros/s/AKfycbxS3g73uh6kzzjPa3GfSfiJaR24NrSdv8tn5k6Hu17eFxf37yHlSy8YIYGauUPvF9ZN/exec"; // <-- HIER DEINE WebApp-URL einfügen
 
     fetch(dataUrl)
       .then(res => res.json())
       .then(data => {
         data.forEach(entry => {
+          console.log("Raw Drive URL:", entry.image); // Debug 1
+
           const item = document.createElement("div");
           item.className = "item";
 
           const img = document.createElement("img");
 
-          // Extrahiere die Drive-Datei-ID aus dem image-Feld
+          // Extrahiere die Datei-ID aus dem Google-Drive-Link
           const match = entry.image.match(/\/d\/([a-zA-Z0-9_-]+)\//);
           if (match && match[1]) {
             const fileId = match[1];
-            img.src = `https://drive.google.com/uc?export=view&id=${fileId}`;
+            const directLink = `https://drive.google.com/uc?export=view&id=${fileId}`;
+            img.src = directLink;
+            console.log("Image src:", img.src); // Debug 2
           } else {
-            img.alt = "Bild konnte nicht geladen werden";
+            console.warn("Kein gültiger Drive-Link:", entry.image);
+            img.alt = "Bild nicht verfügbar";
           }
 
           img.alt = entry.name;
