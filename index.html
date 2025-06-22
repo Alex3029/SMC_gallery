@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>Monster Gallery</title>
+  <title>Monster Galerie</title>
   <style>
     .gallery {
       display: flex;
@@ -20,9 +20,36 @@
   </style>
 </head>
 <body>
-  <h1>Monster Gallery</h1>
+  <h1>Monster Galerie</h1>
   <div class="gallery" id="gallery"></div>
 
-  <script src="gallery.js"></script>
+  <script>
+    const galleryContainer = document.getElementById("gallery");
+
+    const dataUrl = "https://script.google.com/macros/s/AKfycbxS3g73uh6kzzjPa3GfSfiJaR24NrSdv8tn5k6Hu17eFxf37yHlSy8YIYGauUPvF9ZN/exec"; // DEINE WebApp-URL hier einsetzen
+
+    fetch(dataUrl)
+      .then(res => res.json())
+      .then(data => {
+        data.forEach(entry => {
+          const item = document.createElement("div");
+          item.className = "item";
+
+          const img = document.createElement("img");
+          img.src = entry.imageUrl; // oder entry.url, je nachdem wie dein JSON heißt
+          img.alt = entry.name;
+
+          const caption = document.createElement("p");
+          caption.textContent = entry.name;
+
+          item.appendChild(img);
+          item.appendChild(caption);
+          galleryContainer.appendChild(item);
+        });
+      })
+      .catch(err => {
+        console.error("Fehler beim Laden der Daten:", err);
+      });
+  </script>
 </body>
 </html>
