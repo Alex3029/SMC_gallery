@@ -36,7 +36,9 @@
           item.className = "item";
 
           const img = document.createElement("img");
-          img.src = entry.image; // oder entry.url, je nachdem wie dein JSON heißt
+          img.src = const match = entry.image.match(/\/d\/([a-zA-Z0-9_-]+)\//);
+                    const fileId = match ? match[1] : null;
+                    img.src = `https://drive.google.com/uc?export=view&id=${fileId}`;; // oder entry.url, je nachdem wie dein JSON heißt
           img.alt = entry.name;
 
           const caption = document.createElement("p");
