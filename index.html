@@ -45,29 +45,37 @@
 
   <script>
     const galleryContainer = document.getElementById("gallery");
-
-    const dataUrl = "https://script.google.com/macros/s/AKfycbxS3g73uh6kzzjPa3GfSfiJaR24NrSdv8tn5k6Hu17eFxf37yHlSy8YIYGauUPvF9ZN/exec"; // <-- HIER DEINE WebApp-URL einfügen
+    const dataUrl = "https://script.google.com/macros/s/AKfycbxS3g73uh6kzzjPa3GfSfiJaR24NrSdv8tn5k6Hu17eFxf37yHlSy8YIYGauUPvF9ZN/exec"; // 🔁 Hier deine echte WebApp-URL einfügen
 
     fetch(dataUrl)
       .then(res => res.json())
       .then(data => {
         data.forEach(entry => {
-          console.log("Raw Drive URL:", entry.image); // Debug 1
+          console.log("Raw Drive URL:", entry.image); // Debug
 
           const item = document.createElement("div");
           item.className = "item";
 
           const img = document.createElement("img");
 
-          // Extrahiere die Datei-ID aus dem Google-Drive-Link
-          const match = entry.image.match(/\/d\/([a-zA-Z0-9_-]+)\//);
-          if (match && match[1]) {
-            const fileId = match[1];
+          // ✅ Google Drive Datei-ID extrahieren – für beide Linktypen
+          let fileId = null;
+
+          if (entry.image.includes("open?id=")) {
+            fileId = entry.image.split("open?id=")[1];
+          } else {
+            const match = entry.image.match(/\/d\/([a-zA-Z0-9_-]+)\//);
+            if (match && match[1]) {
+              fileId = match[1];
+            }
+          }
+
+          if (fileId) {
             const directLink = `https://drive.google.com/uc?export=view&id=${fileId}`;
             img.src = directLink;
-            console.log("Image src:", img.src); // Debug 2
+            console.log("Image src:", img.src); // Debug
           } else {
-            console.warn("Kein gültiger Drive-Link:", entry.image);
+            console.warn("Konnte keine gültige Datei-ID extrahieren:", entry.image);
             img.alt = "Bild nicht verfügbar";
           }
 
