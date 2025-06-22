@@ -1,20 +1,27 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8">
-  <title>This is a test</title>
-  <script src="https://cdn.jsdelivr.net/gh/naifmehanna/drive-gallery@main/drive-gallery.js"></script>
-</head>
-<body>
-  <h1>This is a test</h1>
-  <div id="drive-gallery"></div>
-  <script>
-    driveGallery({
-      folderID: '17qZp-d8If0hVVs4_WIouUbV9FqadgiLP',
-      container: '#drive-gallery',
-      imageSize: 'large'
+const galleryContainer = document.getElementById("gallery");
+
+// Ersetze diesen Link mit deiner Google Apps Script WebApp-URL
+const dataUrl = "https://script.google.com/macros/s/AKfycbxS3g73uh6kzzjPa3GfSfiJaR24NrSdv8tn5k6Hu17eFxf37yHlSy8YIYGauUPvF9ZN/exec";
+
+fetch(dataUrl)
+  .then(res => res.json())
+  .then(data => {
+    data.forEach(entry => {
+      const item = document.createElement("div");
+      item.className = "item";
+
+      const img = document.createElement("img");
+      img.src = entry.imageUrl; // oder wie du es in JSON genannt hast
+      img.alt = entry.name;
+
+      const caption = document.createElement("p");
+      caption.textContent = entry.name;
+
+      item.appendChild(img);
+      item.appendChild(caption);
+      galleryContainer.appendChild(item);
     });
-  </script>
-  <p><a href="index.html">← Go back</a></p>
-</body>
-</html>
+  })
+  .catch(err => {
+    console.error("Fehler beim Laden der Daten:", err);
+  });
